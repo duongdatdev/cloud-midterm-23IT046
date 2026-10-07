@@ -1,0 +1,12 @@
+<section class="panel login" aria-labelledby="login-title">
+  <h1 id="login-title">Đăng nhập quản trị</h1>
+  {{#if error}}<p class="notice error" role="alert">{{error}}</p>{{/if}}
+  <form action="/login" method="post">
+    <input type="hidden" name="_csrf" value="{{csrfToken}}">
+    <label for="username">Tên đăng nhập</label>
+    <input id="username" name="username" autocomplete="username" maxlength="120" required>
+    <label for="password">Mật khẩu</label>
+    <input id="password" type="password" name="password" autocomplete="current-password" maxlength="256" required>
+    <button type="submit">Đăng nhập</button>
+  </form>
+</section>

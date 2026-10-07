@@ -1,0 +1,46 @@
+<h1>Danh sách sách</h1>
+{{#if flash}}<p class="notice success" role="status">{{flash}}</p>{{/if}}
+{{#if error}}<p class="notice error" role="alert">{{error}}</p>{{/if}}
+<form action="/" method="get" class="search">
+  <label for="search">Tìm theo mã, tên sách hoặc tác giả</label>
+  <div class="search-controls">
+    <input id="search" type="search" name="q" value="{{search}}" maxlength="100">
+    <button type="submit">Tìm kiếm</button>
+    <a href="/">Xem tất cả</a>
+  </div>
+</form>
+<div class="table-wrapper">
+  <table>
+    <caption>Giá tính bằng đồng Việt Nam</caption>
+    <thead><tr><th scope="col">Mã sách</th><th scope="col">Tên sách</th><th scope="col">Tác giả</th><th scope="col">Giá gốc</th><th scope="col">VAT</th><th scope="col">Giá sau thuế</th></tr></thead>
+    <tbody>
+      {{#each books}}
+        <tr><td>{{code}}</td><td>{{title}}</td><td>{{author}}</td><td class="money">{{money priceBeforeTax}}</td><td>{{vatPercent}}%</td><td class="money">{{money priceAfterTax}}</td></tr>
+      {{else}}
+        <tr><td colspan="6">Chưa có sách phù hợp.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+<nav class="pagination" aria-label="Phân trang">
+  {{#if previousUrl}}<a href="{{previousUrl}}">← Trang trước</a>{{/if}}
+  <span>Trang {{page}}</span>
+  {{#if nextUrl}}<a href="{{nextUrl}}">Trang sau →</a>{{/if}}
+</nav>
+{{#if authenticated}}
+  <section class="panel" aria-labelledby="add-title">
+    <h2 id="add-title">Thêm sách</h2>
+    <p>Mã sách bắt đầu bằng <strong>046</strong>. Hệ thống tự tính VAT 12%.</p>
+    <form action="/books" method="post" class="book-form">
+      <input type="hidden" name="_csrf" value="{{csrfToken}}">
+      <div><label for="code">Mã sách</label><input id="code" name="code" value="{{form.code}}" placeholder="046001" maxlength="32" required><small>Ví dụ: 046001 hoặc 046-ABC.</small></div>
+      <div><label for="title">Tên sách</label><input id="title" name="title" value="{{form.title}}" maxlength="200" required></div>
+      <div><label for="author">Tác giả</label><input id="author" name="author" value="{{form.author}}" maxlength="120" required></div>
+      <div><label for="price">Giá trước thuế (đồng)</label><input id="price" type="number" name="price" value="{{form.price}}" min="1" max="1000000000" step="1" required></div>
+      <button type="submit">Thêm sách</button>
+    </form>
+  </section>
+  <p class="muted">Đăng nhập từ {{loginAt}}. Phiên có thời hạn 2 giờ và được gia hạn khi sử dụng.</p>
+{{else}}
+  <p><a href="/login">Đăng nhập</a> để thêm sách.</p>
+{{/if}}

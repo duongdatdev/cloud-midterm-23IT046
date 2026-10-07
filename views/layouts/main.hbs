@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quản lý sách — {{student.id}}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="container header">
+    <a class="brand" href="/">Quản lý sách</a>
+    <nav aria-label="Điều hướng">
+      <a href="/">Danh sách</a>
+      {{#if authenticated}}
+        <form action="/logout" method="post" class="inline">
+          <input type="hidden" name="_csrf" value="{{csrfToken}}">
+          <button type="submit">Đăng xuất</button>
+        </form>
+      {{else}}
+        <a href="/login">Đăng nhập</a>
+      {{/if}}
+    </nav>
+  </header>
+  <main class="container">{{{body}}}</main>
+  <footer class="container">
+    <p>{{student.name}} · MSSV: {{student.id}} · VAT áp dụng: {{student.vatPercent}}%</p>
+  </footer>
+</body>
+</html>
